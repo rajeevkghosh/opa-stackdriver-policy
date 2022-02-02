@@ -19,9 +19,7 @@ metadata:
 spec:
   match:
     kinds:
-      - apiGroups: [""]
+      - apiGroups: ["addons.sigs.k8s.io"]
         kinds: ["Stackdriver"]
   parameters:
-    applogging:
-      key: true
     message: "Stackdriver should have application logging enabled"

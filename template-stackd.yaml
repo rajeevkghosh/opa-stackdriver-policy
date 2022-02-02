@@ -39,18 +39,27 @@ spec:
       rego: |
         package k8sstackdriverapplicationlogging
 
+        get_message(parameters, _default) = msg {
+        not parameters.message
+        msg := _default
+        }
+        get_message(parameters, _default) = msg {
+        msg := parameters.message
+        }
+
         violation[{"msg": msg}] {
         provided := input.review.object.spec["enableStackdriverForApplications"]
-        required := input.parameters.applogging.key
-        required != provided
-        msg := input.parameters.message
+        provided != true
+        def_msg := sprintf("you must enable stackdriver application logging %v", [])
+        msg := get_message(input.parameters, def_msg)
         }
 
         violation[{"msg": msg}] {
         provided := { x | x := input.review.object.spec.enableStackdriverForApplications }
         defined := count(provided)
         defined == 0
-        msg := input.parameters.message
+        def_msg := sprintf("you must define stackdriver application logging parameter %v", [])
+        msg := get_message(input.parameters, def_msg)
         }
 
 
