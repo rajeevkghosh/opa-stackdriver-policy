@@ -27,13 +27,6 @@ spec:
           properties:
             message:
               type: string
-            applogging:
-              type: object
-              properties:
-                key:
-                  type: boolean
-                allowedRegex:
-                  type: string
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
